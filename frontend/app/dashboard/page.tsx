@@ -73,7 +73,7 @@ export default function DashboardPage() {
                 return (
                   <tr key={row.category} className="hover:bg-gray-50">
                     <td className="px-4 py-3 font-medium text-gray-800">{row.category}</td>
-                    <td className="px-4 py-3 text-right font-mono">${row.total.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right font-mono text-gray-900 font-medium">${row.total.toFixed(2)}</td>
                     <td className="px-4 py-3 text-right text-gray-500">
                       {((row.total / grandTotal) * 100).toFixed(1)}%
                     </td>

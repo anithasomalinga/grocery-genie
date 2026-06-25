@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { listReceipts, deleteReceipt, getSummary, ReceiptListItem, Summary } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 import ReceiptTable from "@/components/ReceiptTable";
 
 export default function Home() {
   const [receipts, setReceipts] = useState<ReceiptListItem[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [loading, setLoading] = useState(true);
+  const { isAdmin: admin } = useAuth();
 
   const load = async () => {
     setLoading(true);
@@ -60,7 +62,7 @@ export default function Home() {
           <div className="w-6 h-6 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : (
-        <ReceiptTable receipts={receipts} onDelete={handleDelete} />
+        <ReceiptTable receipts={receipts} onDelete={admin ? handleDelete : undefined} />
       )}
     </div>
   );

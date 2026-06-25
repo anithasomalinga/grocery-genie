@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getReceipt, deleteReceipt, Receipt } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -12,6 +13,7 @@ export default function ReceiptDetailPage() {
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAdmin: admin } = useAuth();
 
   useEffect(() => {
     getReceipt(Number(id))
@@ -53,14 +55,16 @@ export default function ReceiptDetailPage() {
             {receipt.purchase_date ?? "Date unknown"} &middot; {receipt.items.length} items
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={handleDelete}
-            className="text-sm text-red-500 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50"
-          >
-            Delete
-          </button>
-        </div>
+        {admin && (
+          <div className="flex gap-2">
+            <button
+              onClick={handleDelete}
+              className="text-sm text-red-500 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
       {receipt.image_path && (
@@ -99,7 +103,7 @@ export default function ReceiptDetailPage() {
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-2 text-right font-mono">${item.price.toFixed(2)}</td>
+                <td className="px-4 py-2 text-right font-mono text-gray-900 font-medium">${item.price.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

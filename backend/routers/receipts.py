@@ -12,6 +12,7 @@ from database import get_db
 from models import Receipt, ReceiptItem
 from schemas import ReceiptOut, ReceiptListItem, UploadResponse
 from services import ocr, llm
+from services.auth_service import require_admin
 
 router = APIRouter()
 
@@ -25,7 +26,7 @@ ACCEPTED_TYPES = {
 
 
 @router.post("/upload", response_model=UploadResponse)
-async def upload_receipt(file: UploadFile = File(...), db: Session = Depends(get_db)):
+async def upload_receipt(file: UploadFile = File(...), db: Session = Depends(get_db), _: str = Depends(require_admin)):
     content_type = (file.content_type or "").lower()
     if content_type and not content_type.startswith("image/") and content_type not in ACCEPTED_TYPES:
         raise HTTPException(status_code=400, detail=f"Unsupported file type: {content_type}")
@@ -113,7 +114,7 @@ def get_receipt(receipt_id: int, db: Session = Depends(get_db)):
 
 
 @router.delete("/{receipt_id}", status_code=204)
-def delete_receipt(receipt_id: int, db: Session = Depends(get_db)):
+def delete_receipt(receipt_id: int, db: Session = Depends(get_db), _: str = Depends(require_admin)):
     receipt = db.query(Receipt).filter(Receipt.id == receipt_id).first()
     if not receipt:
         raise HTTPException(status_code=404, detail="Receipt not found")

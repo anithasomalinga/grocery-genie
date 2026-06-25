@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ReceiptUpload from "@/components/ReceiptUpload";
 import { Receipt } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UploadPage() {
   const router = useRouter();
+  const { isAdmin } = useAuth();
+
+  useEffect(() => {
+    if (!isAdmin) router.replace("/login?next=/upload");
+  }, [isAdmin, router]);
   const [success, setSuccess] = useState<Receipt | null>(null);
 
   const handleSuccess = (receipt: Receipt) => {

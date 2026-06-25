@@ -9,4 +9,5 @@ pillow-heif==0.16.0
 pytesseract==0.3.10
 anthropic>=0.40.0
 python-dotenv==1.0.1
+python-jose[cryptography]==3.3.0
 pydantic==2.7.0

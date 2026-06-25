@@ -38,7 +38,7 @@ export default function ReceiptTable({ receipts, onDelete }: Props) {
               <td className="px-4 py-3 text-gray-600">
                 {r.purchase_date ?? <span className="text-gray-400">—</span>}
               </td>
-              <td className="px-4 py-3 text-right font-mono">
+              <td className="px-4 py-3 text-right font-mono text-gray-900 font-medium">
                 {r.total_amount != null ? `$${r.total_amount.toFixed(2)}` : "—"}
               </td>
               <td className="px-4 py-3 text-right text-gray-500">{r.item_count}</td>

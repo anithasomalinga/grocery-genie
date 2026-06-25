@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from database import engine, Base
-from routers import receipts, analytics
+from routers import receipts, analytics, auth
 
 Base.metadata.create_all(bind=engine)
 
@@ -30,6 +30,7 @@ upload_dir = os.getenv("UPLOAD_DIR", "./uploads")
 os.makedirs(upload_dir, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=upload_dir), name="uploads")
 
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(receipts.router, prefix="/receipts", tags=["receipts"])
 app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 
