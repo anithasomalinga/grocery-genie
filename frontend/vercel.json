@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://your-backend.up.railway.app"
+    "NEXT_PUBLIC_API_URL": "https://grocery-genie-production-f74c.up.railway.app"
   }
 }
